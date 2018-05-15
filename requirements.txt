@@ -1,0 +1,10 @@
+pytest
+flask
+gunicorn==19.7.1
+flask-cors==3.0.2
+requests
+pytest-cov
+coverage
+psycopg2
+sqlalchemy
+pytest-mock
