@@ -36,5 +36,12 @@ def liveness():
     """Liveness probe."""
     return flask.jsonify({}), 200
 
+
+@app.route('/api/v1/ingest')
+def ingest():
+    """Liveness probe."""
+    return flask.jsonify({}), 200
+
+
 if __name__ == "__main__":
     app.run()

@@ -15,13 +15,12 @@
 # Author: Geetika Batra <gbatra@redhat.com>
 #
 
-"""Utility class."""
-
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm.exc import NoResultFound
-import logging
+"""Declaration of classes representing various exception types."""
 
 
-logger = logging.getLogger(__name__)
+class TaskError(Exception):
+    """There was an error during task execution."""
+
+
+class F8AConfigurationException(Exception):
+    """There was an error during handling configuration."""
