@@ -4,6 +4,7 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
+alembic==0.9.9
 certifi==2018.4.16        # via requests
 chardet==3.0.4            # via requests
 click==6.7                # via flask
@@ -13,10 +14,13 @@ gunicorn==19.7.1
 idna==2.6                 # via requests
 itsdangerous==0.24        # via flask
 jinja2==2.10              # via flask
-markupsafe==1.0           # via jinja2
+mako==1.0.7               # via alembic
+markupsafe==1.0           # via jinja2, mako
 psycopg2==2.7.4
+python-dateutil==2.7.3    # via alembic
+python-editor==1.0.3      # via alembic
 requests==2.18.4
-six==1.11.0               # via flask-cors
+six==1.11.0               # via flask-cors, python-dateutil
 sqlalchemy==1.2.7
 urllib3==1.22             # via requests
 werkzeug==0.14.1          # via flask

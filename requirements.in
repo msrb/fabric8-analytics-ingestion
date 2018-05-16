@@ -4,3 +4,4 @@ flask-cors==3.0.2
 requests
 psycopg2
 sqlalchemy
+alembic
