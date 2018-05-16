@@ -7,6 +7,17 @@ from logging.config import fileConfig
 # access to the values within the .ini file in use.
 config = context.config
 
+if 'F8A_POSTGRES' in os.environ:
+    # if we only need to migrate, we don't really need to import all the stuff,
+    #   we just need to set sqlalchemy.url
+    target_metadata = MetaData()
+    config.set_main_option('sqlalchemy.url', os.environ['F8A_POSTGRES'])
+    if 'MIGRATE_ONLY' not in os.environ:
+        from f8a_worker.models import Base
+        for t in Base.metadata.tables.values():
+            t.tometadata(target_metadata)
+else:
+    target_metadata = None
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 fileConfig(config.config_file_name)
