@@ -1,6 +1,6 @@
 chmod +x run-linter.sh
 directories="src tests"
-separate_files="setup.py"
+separate_files="setup.py __init__.py"
 pass=0
 fail=0
 
