@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
-if [ -z "${WORKER_RUN_DB_MIGRATIONS}" ]; then
-    echo "WORKER_RUN_DB_MIGRATIONS was not set - this worker will not run database migrations"
+if [ -z "${INGESTION_RUN_DB_MIGRATIONS}" ]; then
+    echo "INGESTION_RUN_DB_MIGRATIONS was not set - ingestion will not run database migrations"
     exit 0
 fi
 

@@ -2,7 +2,7 @@
 
 set -xe
 
-THISDIR=$(dirname "$0")
+THISDIR=$PWD
 
 TIMESTAMP="$(date +%F-%H-%M-%S)"
 IMAGE_NAME="registry.devshift.net/bayesian/cucos-worker"
@@ -11,8 +11,8 @@ POSTGRES_CONTAINER_NAME="coreapi-migrations-postgres-${TIMESTAMP}"
 MIGRATIONS_CONTAINER_NAME="coreapi-worker-migrations-${TIMESTAMP}"
 POSTGRES_IMAGE_NAME="registry.centos.org/centos/postgresql-94-centos7:latest"
 
-docker build --pull --tag=$IMAGE_NAME -f "${THISDIR}/../Dockerfile" "${THISDIR}/.."
-docker build -f "${THISDIR}/../Dockerfile.migrations" --tag=$MIGRATIONS_IMAGE_NAME "${THISDIR}/.."
+docker build --pull --tag=$IMAGE_NAME -f "${THISDIR}/Dockerfile" "${THISDIR}/"
+docker build -f "${THISDIR}/Dockerfile.migrations" --tag=$MIGRATIONS_IMAGE_NAME "${THISDIR}/"
 
 gc() {
   retval=$?
@@ -36,12 +36,11 @@ for i in "$@"; do
 done
 
 . tests/postgres.env
-
 #for MAC docker run -t -v `pwd`:/bayesian \
-docker run -t -v "$(readlink -f "${THISDIR}/.."):/src:z" \
+docker run -t -v `pwd`/:/f8a_ingestion \
   --link "${POSTGRES_CONTAINER_NAME}" \
   --net="${NETWORK}" \
   --name="${MIGRATIONS_CONTAINER_NAME}" \
   --env=F8A_POSTGRES="postgresql://${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD}@${POSTGRES_CONTAINER_NAME}:5432/${POSTGRESQL_DATABASE}" \
-  --env=PYTHONPATH=/f8a_worker \
+  --env=PYTHONPATH=/f8a_ingestion \
   ${MIGRATIONS_IMAGE_NAME} "$cmd"

@@ -25,3 +25,11 @@ RUN cd /tmp/f8a_ingestion/ && \
 
 COPY alembic.ini hack/run-db-migrations.sh ${ALEMBIC_DIR}/
 COPY alembic/ ${ALEMBIC_DIR}/alembic
+
+
+RUN pip3 install alembic
+
+RUN mkdir -p /f8a_ingestion
+WORKDIR /f8a_ingestion
+
+ENTRYPOINT ["bash", "-c"]

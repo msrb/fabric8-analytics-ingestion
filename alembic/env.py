@@ -1,19 +1,18 @@
 from __future__ import with_statement
 from alembic import context
-from sqlalchemy import engine_from_config, pool
+from sqlalchemy import engine_from_config, pool, MetaData
 from logging.config import fileConfig
-
+import os
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
-
 if 'F8A_POSTGRES' in os.environ:
     # if we only need to migrate, we don't really need to import all the stuff,
     #   we just need to set sqlalchemy.url
     target_metadata = MetaData()
     config.set_main_option('sqlalchemy.url', os.environ['F8A_POSTGRES'])
     if 'MIGRATE_ONLY' not in os.environ:
-        from f8a_worker.models import Base
+        from src.models import Base
         for t in Base.metadata.tables.values():
             t.tometadata(target_metadata)
 else:
@@ -26,7 +25,6 @@ fileConfig(config.config_file_name)
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = None
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
