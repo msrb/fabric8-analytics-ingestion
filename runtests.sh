@@ -1,7 +1,7 @@
 #!/bin/bash -ex
 chmod +x runtests.sh
 
-export PYTHONPATH=`pwd`/fabric8-analytics-ingestion
+export PYTHONPATH=`pwd`/src
 echo "Create Virtualenv for Python deps ..."
 function prepare_venv() {
     VIRTUALENV=`which virtualenv`
@@ -21,5 +21,7 @@ function prepare_venv() {
 `which pip3` install pytest
 `which pip3` install pytest-cov
 
+pwd
+ls
 
 PYTHONDONTWRITEBYTECODE=1 python3 `which pytest` --cov=src/ --cov-report term-missing -vv tests/
