@@ -13,6 +13,7 @@ function prepare_venv() {
     ${VIRTUALENV} -p python3 venv && source venv/bin/activate
     pip install -U pip
     python3 `which pip3` install -r requirements.txt
+    python3 `which pip3` install radon
 
 }
 
