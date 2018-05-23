@@ -1,5 +1,5 @@
 chmod +x run-linter.sh
-directories="src tests"
+directories="f8a_ingestion tests"
 separate_files="setup.py __init__.py"
 pass=0
 fail=0

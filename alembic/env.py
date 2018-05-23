@@ -12,7 +12,7 @@ if 'F8A_POSTGRES' in os.environ:
     target_metadata = MetaData()
     config.set_main_option('sqlalchemy.url', os.environ['F8A_POSTGRES'])
     if 'MIGRATE_ONLY' not in os.environ:
-        from src.models import Base
+        from f8a_ingestion.models import Base
         for t in Base.metadata.tables.values():
             t.tometadata(target_metadata)
 else:

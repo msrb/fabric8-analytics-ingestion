@@ -15,5 +15,8 @@
 # Author: Geetika Batra <gbatra@redhat.com>
 #
 
-"""Initialize Module."""
+"""Declaration of classes representing various exception types."""
 
+
+class F8AConfigurationException(Exception):
+    """There was an error during handling configuration."""

@@ -28,8 +28,8 @@ from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.session import Session
 from sqlalchemy.pool import NullPool
 
-from src.defaults import configuration
-from src.enums import EcosystemBackend
+from f8a_ingestion.defaults import configuration
+from f8a_ingestion.enums import EcosystemBackend
 
 
 def create_db_scoped_session(connection_string=None):
@@ -161,11 +161,8 @@ class Version(Base):
     id = Column(Integer, primary_key=True)
     package_id = Column(Integer, ForeignKey(Package.id))
     identifier = Column(String(255), index=True)
-    synced2graph = Column(Boolean, nullable=False, default=False)
 
     package = relationship(Package, back_populates='versions', lazy='joined')
-    analyses = relationship('Analysis', back_populates='version')
-
     @classmethod
     def by_identifier(cls, session, identifier):
         try:

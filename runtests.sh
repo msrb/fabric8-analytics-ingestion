@@ -1,7 +1,7 @@
 #!/bin/bash -ex
 chmod +x runtests.sh
 
-export PYTHONPATH=`pwd`/src
+export PYTHONPATH=`pwd`/f8a_ingestion
 echo "Create Virtualenv for Python deps ..."
 function prepare_venv() {
     VIRTUALENV=`which virtualenv`
@@ -35,4 +35,4 @@ radon mi -s -i venv .
 echo "*****************************************"
 echo "*** Unit tests ***"
 echo "*****************************************"
-PYTHONDONTWRITEBYTECODE=1 python3 `which pytest` --cov=src/ --cov-report term-missing -vv tests/
+PYTHONDONTWRITEBYTECODE=1 python3 `which pytest` --cov=f8a_ingestion/ --cov-report term-missing -vv tests/
