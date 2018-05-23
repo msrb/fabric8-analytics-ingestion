@@ -1,7 +1,7 @@
 version: "2"
 services:
   postgres:
-    image: registry.centos.org/centos/postgresql-94-centos7:latest
+    image: registry.centos.org/centos/postgresql-96-centos7:latest
     network_mode: bridge
     ports:
      - "5432:5432"
