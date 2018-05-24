@@ -100,9 +100,9 @@ class Ecosystem(Base):
     __tablename__ = 'ecosystems'
 
     id = Column(Integer, primary_key=True)
+    source_repo = Column(String(255), unique=True)
     name = Column(String(255), unique=True)
     url = Column(String(255))
-    fetch_url = Column(String(255))
     _backend = Column(
         Enum(*[b.name for b in EcosystemBackend], name='ecosystem_backend_enum'))
 
