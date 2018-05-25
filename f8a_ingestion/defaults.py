@@ -21,12 +21,15 @@ import logging
 from urllib.parse import quote, urljoin
 
 import random
-from os import environ
+from os import environ, path
 
-from f8a_ingestion.errors import F8AConfigurationException
+from errors import F8AConfigurationException
 
 logger = logging.getLogger(__name__)
 
+_INGESTION_JOBS_DIR = path.dirname(path.realpath(__file__))
+
+SWAGGER_YAML_PATH = path.join(_INGESTION_JOBS_DIR, '../swagger/swagger.yaml')
 
 class F8AConfiguration(object):
     """Configuration."""

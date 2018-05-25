@@ -28,8 +28,8 @@ from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.session import Session
 from sqlalchemy.pool import NullPool
 
-from f8a_ingestion.defaults import configuration
-from f8a_ingestion.enums import EcosystemBackend
+from defaults import configuration
+from enums import EcosystemBackend
 
 
 def create_db_scoped_session(connection_string=None):

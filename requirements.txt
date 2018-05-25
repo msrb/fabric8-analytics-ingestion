@@ -7,20 +7,26 @@
 alembic==0.9.9
 certifi==2018.4.16        # via requests
 chardet==3.0.4            # via requests
-click==6.7                # via flask
+click==6.7                # via clickclick, flask
+clickclick==1.2.2         # via connexion
+connexion==1.4.2
 flask-cors==3.0.2
 flask==1.0.2
 gunicorn==19.7.1
 idna==2.6                 # via requests
+inflection==0.3.1         # via connexion
 itsdangerous==0.24        # via flask
 jinja2==2.10              # via flask
+jsonschema==2.6.0         # via connexion, swagger-spec-validator
 mako==1.0.7               # via alembic
 markupsafe==1.0           # via jinja2, mako
 psycopg2==2.7.4
 python-dateutil==2.7.3    # via alembic
 python-editor==1.0.3      # via alembic
+pyyaml==3.12              # via clickclick, connexion
 requests==2.18.4
-six==1.11.0               # via flask-cors, python-dateutil
+six==1.11.0               # via connexion, flask-cors, python-dateutil, swagger-spec-validator
 sqlalchemy==1.2.7
+swagger-spec-validator==2.1.0  # via connexion
 urllib3==1.22             # via requests
 werkzeug==0.14.1          # via flask
