@@ -43,6 +43,7 @@ def create_db_scoped_session(connection_string=None):
 
 class BayesianModelMixin(object):
     """Subclasses of this class will gain some `by_*` class methods.
+
     Note, that these should only be used to obtain objects by unique attribute
     (or combination of attributes that make the object unique), since under the
     hood they use SQLAlchemy's `.one()`.
@@ -163,6 +164,7 @@ class Version(Base):
     identifier = Column(String(255), index=True)
 
     package = relationship(Package, back_populates='versions', lazy='joined')
+
     @classmethod
     def by_identifier(cls, session, identifier):
         try:

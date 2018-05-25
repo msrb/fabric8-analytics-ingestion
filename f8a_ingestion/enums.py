@@ -15,12 +15,15 @@
 # Author: Geetika Batra <gbatra@redhat.com>
 #
 
-"""Ecosystem Backend range"""
+"""Ecosystem Backend range."""
 
 
 from enum import IntEnum
 
+
 class EcosystemBackend(IntEnum):
+    """Ecosystem Backend range."""
+
     # range will increase in case of adding new backend
     # none, nodejs, java, python, ruby, go, crates
     # NOTE: when altering this, you'll manually need to create a migration that alters
@@ -30,5 +33,7 @@ class EcosystemBackend(IntEnum):
 
 
 class SortOrder(IntEnum):
+    """Enumeration describing sort order."""
+
     ascending = 0
     descending = 1

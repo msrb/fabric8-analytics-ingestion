@@ -1,5 +1,5 @@
 chmod +x check-docstyle.sh
-directories="f8a_ingestion tests"
+directories="f8a_ingestion tests alembic"
 separate_files="setup.py __init__.py"
 pass=0
 fail=0
