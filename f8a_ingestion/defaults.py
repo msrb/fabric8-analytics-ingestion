@@ -50,9 +50,9 @@ class F8AConfiguration(object):
                    database=environ.get('POSTGRESQL_DATABASE'))
         return connection
 
-
     UNQUOTED_POSTGRES_CONNECTION = _make_postgres_string(environ.get('POSTGRESQL_PASSWORD', ''))
     POSTGRES_CONNECTION = _make_postgres_string(
         quote(environ.get('POSTGRESQL_PASSWORD', ''), safe=''))
+
 
 configuration = F8AConfiguration()

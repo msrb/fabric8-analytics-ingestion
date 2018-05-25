@@ -20,6 +20,7 @@
 
 from enum import IntEnum
 
+
 class EcosystemBackend(IntEnum):
     # range will increase in case of adding new backend
     # none, nodejs, java, python, ruby, go, crates
