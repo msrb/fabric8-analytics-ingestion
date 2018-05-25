@@ -1,3 +1,4 @@
+"""Script to run the database migrations, online or offline."""
 from __future__ import with_statement
 from alembic import context
 from sqlalchemy import engine_from_config, pool, MetaData
@@ -72,6 +73,7 @@ def run_migrations_online():
 
         with context.begin_transaction():
             context.run_migrations()
+
 
 if context.is_offline_mode():
     run_migrations_offline()
