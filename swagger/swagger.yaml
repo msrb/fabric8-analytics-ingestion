@@ -7,12 +7,6 @@ consumes:
   - application/json
 produces:
   - application/json
-securityDefinitions:
-  auth_token:
-    type: "apiKey"
-    name: "auth-token"
-    in: "header"
-
 paths:
   /liveness:
     get:
@@ -30,3 +24,46 @@ paths:
       responses:
         200:
           description: Service is ready
+  /ingest:
+    post:
+      tags: [Ingestion]
+      operationId: rest_api.ingest
+      summary: Ingests data
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: ecosystem_name
+          in: body
+          required: true
+          description: JSON describing SQL query
+          schema:
+            $ref: "#/definitions/Ingestion" 
+      responses:
+        200:
+          description: Data ingestion is successful
+        400:
+          description: Error in data ingestion
+
+definitions:
+  Ingestion:
+    title: Ecosystem Details
+    description: Ecosystem Details
+    properties:
+      ecosystem:
+        type: string
+      url:
+        type: string
+      backend:
+        type: string
+      package:
+        $ref: "#/definitions/package"
+      version: 
+        $ref: "#/definitions/version"
+  package:
+    additionalProperties:
+      type: string  
+  version:
+    additionalProperties:
+      type: string
