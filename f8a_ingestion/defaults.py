@@ -47,7 +47,7 @@ class F8AConfiguration(object):
         connection = 'postgresql://{user}:{password}@{pgbouncer_host}:{pgbouncer_port}' \
                      '/{database}?sslmode=disable'. \
             format(user=environ.get('POSTGRESQL_USER'),
-                   password=password,
+                   password=environ.get('POSTGRES_PASSWORD'),
                    pgbouncer_host=environ.get('PGBOUNCER_SERVICE_HOST', 'coreapi-pgbouncer'),
                    pgbouncer_port=environ.get('PGBOUNCER_SERVICE_PORT', '5432'),
                    database=environ.get('POSTGRESQL_DATABASE'))

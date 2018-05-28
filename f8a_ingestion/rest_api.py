@@ -20,8 +20,9 @@
 import connexion
 import flask
 import defaults
-from flask import Flask, request
-from flask_cors import CORS
+from flask import request
+from utils import DatabaseIngestion, validate_request_data, map_enum_backend
+from enums import EcosystemBackend
 
 
 def readiness():
@@ -35,8 +36,52 @@ def liveness():
 
 
 def ingest():
-    """Liveness probe."""
-    return flask.jsonify({}), 200
+    """Ingest Data."""
+    """
+    Endpoint to ingest Ecosystem data.
+    Registers new information and
+    updates existing Ecosystem information.
+    """
+    resp_dict = {
+        "success": True,
+        "summary": ""
+    }
+    temp = EcosystemBackend["maven"] 
+    input_json = request.get_json()
+    if request.content_type != 'application/json':
+        resp_dict["success"] = False
+        resp_dict["summary"] = "Set content type to application/json"
+        return flask.jsonify(resp_dict), 400
+
+    validated_data = validate_request_data(input_json)
+    if not validated_data[0]:
+        resp_dict["success"] = False
+        resp_dict["summary"] = validated_data[1]
+        return flask.jsonify(resp_dict), 404
+    input_json["backend"] = map_enum_backend(input_json.get("backend", None))
+    try:
+        ecosystem_info = DatabaseIngestion.get_info(input_json.get('ecosystem'))
+        if ecosystem_info.get('is_valid'):
+            data = ecosystem_info.get('data')
+            # Update the record to reflect new git_sha if any.
+            DatabaseIngestion.update_data(input_json)
+        else:
+            try:
+                # First time ingestion
+                DatabaseIngestion.store_record(input_json)
+                return flask.jsonify(resp_dict), 200
+            except Exception as e:
+                resp_dict["success"] = False
+                resp_dict["summary"] = "Database Ingestion Failure due to: {}" \
+                    .format(e)
+                return flask.jsonify(resp_dict), 500
+    except Exception as e:
+        resp_dict["success"] = False
+        resp_dict["summary"] = "Cannot get information about Ecosystem {} " \
+                               "due to {}" \
+            .format(input_json.get('ecosystem'), e)
+        return flask.jsonify(resp_dict), 500
+    return flask.jsonify(resp_dict), 200
 
 app = connexion.FlaskApp(__name__)
 
