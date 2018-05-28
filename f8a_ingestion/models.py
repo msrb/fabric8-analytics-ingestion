@@ -109,7 +109,6 @@ class Ecosystem(Base):
     __tablename__ = 'ecosystems'
 
     id = Column(Integer, primary_key=True)
-    source_repo = Column(String(255), unique=True)
     name = Column(String(255), unique=True)
     url = Column(String(255))
     _backend = Column(
