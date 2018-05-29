@@ -46,7 +46,6 @@ def ingest():
         "success": True,
         "summary": ""
     }
-    temp = EcosystemBackend["maven"] 
     input_json = request.get_json()
     if request.content_type != 'application/json':
         resp_dict["success"] = False
@@ -58,18 +57,16 @@ def ingest():
         resp_dict["success"] = False
         resp_dict["summary"] = validated_data[1]
         return flask.jsonify(resp_dict), 404
-    input_json["backend"] = map_enum_backend(input_json.get("backend", None))
+
     try:
         ecosystem_info = DatabaseIngestion.get_info(input_json.get('ecosystem'))
         if ecosystem_info.get('is_valid'):
-            data = ecosystem_info.get('data')
-            # Update the record to reflect new git_sha if any.
             DatabaseIngestion.update_data(input_json)
         else:
             try:
                 # First time ingestion
+                input_json["backend"] = map_enum_backend(input_json.get("backend", None))
                 DatabaseIngestion.store_record(input_json)
-                return flask.jsonify(resp_dict), 200
             except Exception as e:
                 resp_dict["success"] = False
                 resp_dict["summary"] = "Database Ingestion Failure due to: {}" \
@@ -81,7 +78,9 @@ def ingest():
                                "due to {}" \
             .format(input_json.get('ecosystem'), e)
         return flask.jsonify(resp_dict), 500
+    resp_dict["summary"] = DatabaseIngestion.get_info(input_json.get('ecosystem'))
     return flask.jsonify(resp_dict), 200
+
 
 app = connexion.FlaskApp(__name__)
 

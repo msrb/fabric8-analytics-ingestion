@@ -28,12 +28,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def _to_object_dict(data):
-    """Convert the object of type Ecosystem into a dictionary."""
-    return_dict = {Ecosystem.name: data["ecosystem"],
-                   Ecosystem.url: data["url"]
-                   }
-    return return_dict
 
 def get_session():
     """Retrieve the database connection session."""
@@ -43,19 +37,21 @@ def get_session():
         raise Exception("session could not be loaded due to {}".format(e))
     return session
 
+
 def map_enum_backend(backend):
     map_backend = {
-                "npm" : EcosystemBackend.npm,
-                "maven" : EcosystemBackend.maven,
-                "pypi" : EcosystemBackend.pypi,
-                "rubygems" : EcosystemBackend.rubygems,
-                "scm" : EcosystemBackend.scm,
-                "crates" : EcosystemBackend.nuget
+                "npm": EcosystemBackend.npm,
+                "maven": EcosystemBackend.maven,
+                "pypi": EcosystemBackend.pypi,
+                "rubygems": EcosystemBackend.rubygems,
+                "scm": EcosystemBackend.scm,
+                "crates": EcosystemBackend.nuget
     }
     if backend not in map_backend.keys():
         return EcosystemBackend.none
     else:
         return map_backend.get(backend)
+
 
 def validate_request_data(input_json):
     """Validate the data.
@@ -67,13 +63,22 @@ def validate_request_data(input_json):
     if 'ecosystem' not in input_json:
         validate_string = validate_string.format("Ecosystem name")
         return False, validate_string
-
     back_validate = "{} is not valid backend"
     if input_json.get('backend', None) not in backend_list:
         back_validate = back_validate.format("Backend")
         return False, back_validate
 
     return True, None
+
+
+def _eco_object_dict(data):
+    """Convert the object of type JobToken into a dictionary."""
+    return_dict = {Ecosystem.name: data["ecosystem"],
+                   Ecosystem.url: data["url"],
+                   Ecosystem._backend: data["backend"],
+                   }
+    return return_dict
+
 
 class DatabaseIngestion:
     """Class to ingest data into Database."""
@@ -110,7 +115,8 @@ class DatabaseIngestion:
             session = get_session()
             entry = Ecosystem(
                 name=data['ecosystem'],
-                url=data.get('url', 'None')
+                url=data.get('url', 'None'),
+                backend=data.get('backend')
             )
             session.add(entry)
             session.commit()
@@ -119,7 +125,7 @@ class DatabaseIngestion:
             raise Exception("Error in storing the record in current session")
         except Exception as e:
             raise Exception("Error in storing the record due to {}".format(e))
-        return cls.get_info(data["git-url"])
+        return cls.get_info(data["ecosystem"])
 
     @classmethod
     def get_info(cls, search_key):
