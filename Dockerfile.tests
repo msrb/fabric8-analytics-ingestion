@@ -1,0 +1,11 @@
+FROM bayesian/f8a_ingestion
+
+ENV PYTHONDONTWRITEBYTECODE 1
+
+COPY . /f8a_ingestion
+RUN cd /f8a_ingestion/tests && pip3 install -r ./requirements.txt
+
+# This is needed for codecov so the CWD is writeable and codecov can write stats to a file.
+WORKDIR /tmp
+
+CMD ["py.test", "--cov=/f8a_inegstion"]  
