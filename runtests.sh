@@ -14,10 +14,6 @@ TIMESTAMP="$(date +%F-%H-%M-%S)"
 
 POSTGRES_IMAGE_NAME="registry.centos.org/centos/postgresql-94-centos7:latest"
 
-IMAGE_NAME=${IMAGE_NAME:-bayesian/f8a_ingestion}
-TEST_IMAGE_NAME="f8a_ingestion-tests"
-CONTAINER_NAME="inegstion-tests-${TIMESTAMP}"
-# we don't want to wipe local "database" container, so we create a custom one just for tests
 TESTDB_CONTAINER_NAME="inegstion-tests-db-${TIMESTAMP}"
 DOCKER_NETWORK="F8aIngestionTest"
 
@@ -30,26 +26,31 @@ gc() {
   docker rm -v ${CONTAINER_NAME} || :
   echo "Removing network ${DOCKER_NETWORK}"
   docker network rm ${DOCKER_NETWORK} || :
+  deactivate
+  rm -rf venv/
   exit $retval
 }
 
 trap gc EXIT SIGINT
 
-# if [ "$REBUILD" == "1" ] || \
-#      !(docker inspect $IMAGE_NAME > /dev/null 2>&1); then
-#   echo "Building $IMAGE_NAME for testing"
-#   docker build --tag=$IMAGE_NAME .
-# fi
+function prepare_venv() {
+    VIRTUALENV=`which virtualenv`
+    if [ $? -eq 1 ]
+    then
+        # python34 which is in CentOS does not have virtualenv binary
+        VIRTUALENV=`which virtualenv-3`
+    fi
 
-# if [ "$REBUILD" == "1" ] || \
-#      !(docker inspect $TEST_IMAGE_NAME > /dev/null 2>&1); then
-#   echo "Building $TEST_IMAGE_NAME test image"
-#   docker build -f ./Dockerfile.tests --tag=$TEST_IMAGE_NAME .
-# fi
+    ${VIRTUALENV} -p python3 venv && source venv/bin/activate
+    if [ $? -ne 0 ]
+    then
+        printf "${RED}Python virtual environment can't be initialized${NORMAL}"
+        exit 1
+    fi
+}
 
-echo "Removing database"
-docker kill ${TESTDB_CONTAINER_NAME} || :
-docker rm -vf ${TESTDB_CONTAINER_NAME} || :
+prepare_venv
+pip3 install -r tests/requirements.txt
 
 echo "Creating network ${DOCKER_NETWORK}"
 docker network create ${DOCKER_NETWORK}
@@ -80,6 +81,6 @@ export POSTGRESQL_USER=coreapi
 export POSTGRESQL_PASSWORD=coreapi
 export POSTGRESQL_DATABASE=coreapi
 
-python3 `which pytest` --cov=f8a_ingestion/ --cov-report term-missing -vv tests/
+python3 `which pytest` --cov=f8a_ingestion/ --cov-report term-missing -vv tests
 
 echo "Test suite passed \\o/"

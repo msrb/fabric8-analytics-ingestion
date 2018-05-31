@@ -21,8 +21,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm.exc import NoResultFound
-from models import Ecosystem, create_db_scoped_session
-from enums import EcosystemBackend
+from f8a_ingestion.models import Ecosystem, create_db_scoped_session
+from f8a_ingestion.enums import EcosystemBackend
 import logging
 
 

@@ -23,7 +23,7 @@ from urllib.parse import quote, urljoin
 import random
 from os import environ, path
 
-from errors import F8AConfigurationException
+from f8a_ingestion.errors import F8AConfigurationException
 
 logger = logging.getLogger(__name__)
 
