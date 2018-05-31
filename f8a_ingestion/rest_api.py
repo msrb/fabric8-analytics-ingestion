@@ -21,7 +21,7 @@ import connexion
 import flask
 import defaults
 from flask import request
-from utils import DatabaseIngestion, validate_request_data, map_enum_backend
+from f8a_ingestion.utils import DatabaseIngestion, validate_request_data, map_enum_backend
 from enums import EcosystemBackend
 
 
