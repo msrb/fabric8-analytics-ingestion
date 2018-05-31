@@ -19,10 +19,10 @@
 
 import connexion
 import flask
-import defaults
+from f8a_ingestion import defaults
 from flask import request
 from f8a_ingestion.utils import DatabaseIngestion, validate_request_data, map_enum_backend
-from enums import EcosystemBackend
+from f8a_ingestion.enums import EcosystemBackend
 
 
 def readiness():
