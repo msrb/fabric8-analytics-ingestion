@@ -33,6 +33,7 @@ from f8a_ingestion.enums import EcosystemBackend
 
 
 def create_db_scoped_session(connection_string=None):
+    """Create scoped session."""
     # we use NullPool, so that SQLAlchemy doesn't pool local connections
     #  and only really uses connections while writing results
     return scoped_session(
@@ -47,11 +48,13 @@ class BayesianModelMixin(object):
     Note, that these should only be used to obtain objects by unique attribute
     (or combination of attributes that make the object unique), since under the
     hood they use SQLAlchemy's `.one()`.
+
     Also note, that these class methods will raise sqlalchemy.rom.exc.NoResultFound if the object
     is not found.
     """
 
     def to_dict(self):
+        """Convert table to dictionary."""
         d = {}
         for column in self.__table__.columns:
             d[column.name] = getattr(self, column.name)
@@ -60,6 +63,7 @@ class BayesianModelMixin(object):
 
     @classmethod
     def _by_attrs(cls, session, **attrs):
+        """Get one row with attrs."""
         try:
             return session.query(cls).filter_by(**attrs).one()
         except NoResultFound:
@@ -70,6 +74,7 @@ class BayesianModelMixin(object):
 
     @classmethod
     def by_id(cls, session, id):
+        """Get a row with id."""
         try:
             return cls._by_attrs(session, id=id)
         except NoResultFound:
@@ -78,6 +83,7 @@ class BayesianModelMixin(object):
 
     @classmethod
     def get_or_create(cls, session, **attrs):
+        """Try to get by attrs or create new record if no result found."""
         try:
             return cls._by_attrs(session, **attrs)
         except NoResultFound:
@@ -98,6 +104,8 @@ Base = declarative_base(cls=BayesianModelMixin)
 
 
 class Ecosystem(Base):
+    """Table for Ecosystem."""
+
     __tablename__ = 'ecosystems'
 
     id = Column(Integer, primary_key=True)
@@ -111,17 +119,21 @@ class Ecosystem(Base):
 
     @property
     def backend(self):
+        """Get backend property."""
         return EcosystemBackend[self._backend]
 
     @backend.setter
     def backend(self, backend):
+        """Set backend property."""
         self._backend = EcosystemBackend(backend).name
 
     def is_backed_by(self, backend):
+        """Is this ecosystem backed by specified backend?."""
         return self.backend == backend
 
     @classmethod
     def by_name(cls, session, name):
+        """Get a row with specified name."""
         try:
             return cls._by_attrs(session, name=name)
         except NoResultFound:
@@ -130,6 +142,8 @@ class Ecosystem(Base):
 
 
 class Package(Base):
+    """Table for Package."""
+
     __tablename__ = 'packages'
     # ecosystem_id together with name must be unique
     __table_args__ = (UniqueConstraint(
@@ -145,6 +159,7 @@ class Package(Base):
 
     @classmethod
     def by_name(cls, session, name):
+        """Get a row with specified name."""
         # TODO: this is dangerous at is does not consider Ecosystem
         try:
             return cls._by_attrs(session, name=name)
@@ -154,6 +169,8 @@ class Package(Base):
 
 
 class Version(Base):
+    """Table for Version."""
+
     __tablename__ = 'versions'
     # package_id together with version identifier must be unique
     __table_args__ = (UniqueConstraint(
@@ -167,6 +184,7 @@ class Version(Base):
 
     @classmethod
     def by_identifier(cls, session, identifier):
+        """Get a row with specified identifier."""
         try:
             return cls._by_attrs(session, identifier=identifier)
         except NoResultFound:
