@@ -17,6 +17,14 @@ objects:
     replicas: "${{REPLICAS}}"
     selector:
       service: f8a-analytics-ingestion
+    strategy:
+      type: Recreate
+      recreateParams:
+        pre:
+          failurePolicy: Retry
+          execNewPod:
+            containerName: f8a-analytics-ingestion
+            command: ["ingestion-pre-hook.sh"]
     template:
       metadata:
         labels:
@@ -26,14 +34,10 @@ objects:
         - command:
           - /bin/entrypoint.sh
           env:
-          - name: PGBOUNCER_SERVICE_HOST
-            value: bayesian-pgbouncer
-          - name: PGBOUNCER_SERVICE_PORT
+          - name: POSTGRES_SERVICE_HOST
+            value: coreapi-postgres
+          - name: POSTGRES_SERVICE_PORT
             value: "5432"
-          - name: COREAPI_SERVICE_HOST
-            value: bayesian-api
-          - name: COREAPI_SERVICE_PORT
-            value: "5000"
           - name: POSTGRESQL_DATABASE
             valueFrom:
               secretKeyRef:
