@@ -1,20 +1,19 @@
 FROM registry.centos.org/centos/centos:7
 
-ENV LANG=en_US.UTF-8 \
-    # place for alembic migrations
-    ALEMBIC_DIR='/alembic'
 RUN yum install -y epel-release &&\
-    yum install -y gcc  python34-pip python34-requests python34-devel &&\
+    yum install -y gcc git python34-pip python34-requests python34-devel &&\
     yum clean all
 
-RUN pip3 install --upgrade pip>=10.0.0
+COPY ./requirements.txt /
 
-# Make sure random user has place to store files
+RUN pip3 install --upgrade pip>=10.0.0 &&\
+    pip3 install -r requirements.txt && rm requirements.txt
 
-COPY requirements.txt /tmp/f8a_ingestion/
+COPY ./f8a_ingestion /f8a_ingestion
+COPY ./swagger /swagger
+COPY ./rest_api.py /
+ADD scripts/entrypoint.sh /bin/entrypoint.sh
 
-RUN cd /tmp/f8a_ingestion/ && \
-    pip3 install -r requirements.txt
+RUN chmod 777 /bin/entrypoint.sh
 
-COPY alembic.ini hack/run-db-migrations.sh ${ALEMBIC_DIR}/
-COPY alembic/ ${ALEMBIC_DIR}/alembic
+ENTRYPOINT ["/bin/entrypoint.sh"]
