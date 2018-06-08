@@ -27,9 +27,7 @@ from f8a_ingestion.errors import F8AConfigurationException
 
 logger = logging.getLogger(__name__)
 
-_INGESTION_JOBS_DIR = path.dirname(path.realpath(__file__))
-
-SWAGGER_YAML_PATH = path.join(_INGESTION_JOBS_DIR, '../swagger/swagger.yaml')
+SWAGGER_YAML_PATH = path.join(path.dirname(path.realpath(__file__)), '../swagger/swagger.yaml')
 
 
 class F8AConfiguration(object):
