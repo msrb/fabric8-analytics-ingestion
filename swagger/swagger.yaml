@@ -45,7 +45,10 @@ paths:
           description: Data ingestion is successful
         400:
           description: Error in data ingestion
-
+        404:
+          description: Invalid Data
+        500:
+          description: Database Error
 definitions:
   Ingestion:
     title: Ecosystem Details
