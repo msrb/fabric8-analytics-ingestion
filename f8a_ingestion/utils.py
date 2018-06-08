@@ -112,7 +112,7 @@ class DatabaseIngestion:
 
     @classmethod
     def get_info(cls, search_key):
-        """Get information about github url.
+        """Get information about Ecosystem.
         :param search_key: Ecosystem name to search database
         :return: record from database if exists
         """
@@ -131,6 +131,6 @@ class DatabaseIngestion:
             session.rollback()
             raise Exception("Error in retrieving the record in current session")
         except Exception as e:
-            raise "Error in getting info due to {}".format(e)
+            raise Exception("Error in getting info due to {}".format(e))
 
         return {'is_valid': True, 'data': entry.to_dict()}

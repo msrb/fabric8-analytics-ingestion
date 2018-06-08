@@ -3,4 +3,4 @@
 
 set -e
 
-/alembic/run-db-migrations.sh
+alembic upgrade head
