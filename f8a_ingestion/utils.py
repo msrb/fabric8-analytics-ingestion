@@ -131,9 +131,6 @@ class DatabaseIngestion:
             session.rollback()
             raise Exception("Error in retrieving the record in current session")
         except Exception as e:
-            raise {
-                'error': 'Error in getting info due to {}'.format(e),
-                'is_valid': False
-            }
+            raise "Error in getting info due to {}".format(e)
 
         return {'is_valid': True, 'data': entry.to_dict()}
