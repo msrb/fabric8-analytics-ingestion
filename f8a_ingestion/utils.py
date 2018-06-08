@@ -17,8 +17,6 @@
 
 """Utility class."""
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm.exc import NoResultFound
 from f8a_ingestion.models import Ecosystem, create_db_scoped_session
@@ -38,27 +36,12 @@ def get_session():
     return session
 
 
-def map_enum_backend(backend):
-    map_backend = {
-                "npm": EcosystemBackend.npm,
-                "maven": EcosystemBackend.maven,
-                "pypi": EcosystemBackend.pypi,
-                "rubygems": EcosystemBackend.rubygems,
-                "scm": EcosystemBackend.scm,
-                "crates": EcosystemBackend.nuget
-    }
-    if backend not in map_backend.keys():
-        return EcosystemBackend.none
-    else:
-        return map_backend.get(backend)
-
-
 def validate_request_data(input_json):
     """Validate the data.
     :param input_json: dict, describing data
     :return: boolean, result
     """
-    backend_list = ["none", "npm", "maven", "pypi", "rubygems", "scm", "crates", "nuget"]
+    backend_list = list(EcosystemBackend.__members__.keys())
     validate_string = "{} is not valid"
     if 'ecosystem' not in input_json:
         validate_string = validate_string.format("Ecosystem name")
@@ -72,7 +55,7 @@ def validate_request_data(input_json):
 
 
 def _eco_object_dict(data):
-    """Convert the object of type JobToken into a dictionary."""
+    """Convert the object of type Ecosystem into a dictionary."""
     return_dict = {Ecosystem.name: data["ecosystem"],
                    Ecosystem.url: data["url"],
                    Ecosystem._backend: data["backend"],
@@ -86,7 +69,7 @@ class DatabaseIngestion:
     @staticmethod
     def update_data(data):
         """Update existing record in the database.
-        :param data: dict, describing github data
+        :param data: dict, describing Ecosystem data
         :return: None
         """
         try:
@@ -104,7 +87,7 @@ class DatabaseIngestion:
     @classmethod
     def store_record(cls, data):
         """Store new record in the database.
-        :param data: dict, describing github data
+        :param data: dict, describing Ecosystem data
         :return: boolean based on completion of process
         """
         eco_name = data.get("ecosystem", None)
@@ -130,7 +113,7 @@ class DatabaseIngestion:
     @classmethod
     def get_info(cls, search_key):
         """Get information about github url.
-        :param search_key: github url to search database
+        :param search_key: Ecosystem name to search database
         :return: record from database if exists
         """
         if not search_key:

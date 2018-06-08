@@ -21,7 +21,7 @@ import connexion
 import flask
 from f8a_ingestion import defaults
 from flask import request
-from f8a_ingestion.utils import DatabaseIngestion, validate_request_data, map_enum_backend
+from f8a_ingestion.utils import DatabaseIngestion, validate_request_data
 from f8a_ingestion.enums import EcosystemBackend
 
 
@@ -65,7 +65,8 @@ def ingest():
         else:
             try:
                 # First time ingestion
-                input_json["backend"] = map_enum_backend(input_json.get("backend", None))
+                backend = EcosystemBackend.__members__.get(input_json.get("backend", None))
+                input_json["backend"] = backend
                 DatabaseIngestion.store_record(input_json)
             except Exception as e:
                 resp_dict["success"] = False
