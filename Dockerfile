@@ -1,7 +1,7 @@
 FROM registry.centos.org/centos/centos:7
 
 RUN yum install -y epel-release &&\
-    yum install -y gcc git python34-pip python34-requests python34-devel &&\
+    yum install -y gcc git python34-pip python34-requests python34-devel postgresql-server &&\
     yum clean all
 
 COPY ./requirements.txt /
@@ -12,6 +12,14 @@ RUN pip3 install --upgrade pip>=10.0.0 &&\
 COPY ./f8a_ingestion /f8a_ingestion
 COPY ./swagger /swagger
 COPY ./rest_api.py /
+COPY ./alembic /alembic
+COPY ./alembic.ini /alembic.ini
+COPY ./hack/run-db-migrations.sh /alembic/run-db-migrations.sh
+RUN chmod +x /alembic/run-db-migrations.sh
+
+COPY ./hack/ingestion-pre-hook.sh /
+RUN chmod +x /ingestion-pre-hook.sh
+
 ADD scripts/entrypoint.sh /bin/entrypoint.sh
 
 RUN chmod 777 /bin/entrypoint.sh

@@ -1,10 +1,5 @@
 #!/usr/bin/bash
 
-if [ -z "${INGESTION_RUN_DB_MIGRATIONS}" ]; then
-    echo "INGESTION_RUN_DB_MIGRATIONS was not set - ingestion will not run database migrations"
-    exit 0
-fi
-
 export POSTGRESQL_HOST=${PGBOUNCER_SERVICE_HOST:-coreapi-pgbouncer}
 export POSTGRESQL_PORT=${PGBOUNCER_SERVICE_PORT:-5432}
 export F8A_POSTGRES=postgresql://${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD}@${POSTGRESQL_HOST}:${POSTGRESQL_PORT}/${POSTGRESQL_DATABASE}

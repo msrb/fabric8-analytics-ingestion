@@ -17,6 +17,7 @@ services:
       context: .
       dockerfile: Dockerfile.migrations
     network_mode: bridge
+    restart: on-failure
     hostname: alembic_migrations
     links:
       - postgres
@@ -32,10 +33,12 @@ services:
       INGESTION_API_SERVICE_PORT: 5000
       INGESTION_API_SERVICE_TIMEOUT: 3000
       POSTGRESQL_USER: coreapi
-      POSTGRES_PASSWORD: coreapi
+      POSTGRESQL_PASSWORD: coreapi
       POSTGRESQL_DATABASE: coreapi
       PGBOUNCER_SERVICE_HOST: coreapi-postgres
       PGBOUNCER_SERVICE_PORT: 5432
+      NUMBER_WORKER_PROCESS: 4
+      CLASS_TYPE: sync
     links:
       - postgres
     container_name: f8a_ingestion
