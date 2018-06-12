@@ -18,13 +18,13 @@ objects:
     selector:
       service: f8a-analytics-ingestion
     strategy:
-      type: Recreate
-      recreateParams:
+      type: Rolling
+      rollingParams:
         pre:
           failurePolicy: Retry
           execNewPod:
             containerName: f8a-analytics-ingestion
-            command: ["ingestion-pre-hook.sh"]
+            command: ["/ingestion-pre-hook.sh"]
     template:
       metadata:
         labels:
@@ -34,9 +34,9 @@ objects:
         - command:
           - /bin/entrypoint.sh
           env:
-          - name: POSTGRES_SERVICE_HOST
+          - name: PGBOUNCER_SERVICE_HOST
             value: coreapi-postgres
-          - name: POSTGRES_SERVICE_PORT
+          - name: PGBOUNCER_SERVICE_PORT
             value: "5432"
           - name: POSTGRESQL_DATABASE
             valueFrom:
@@ -72,7 +72,7 @@ objects:
             failureThreshold: 3
             successThreshold: 1
             tcpSocket:
-              port: ${{INEGSTION_API_SERVICE_PORT}}
+              port: ${{INGESTION_API_SERVICE_PORT}}
           readinessProbe:
             tcpSocket:
               port: ${{INGESTION_API_SERVICE_PORT}}
@@ -148,7 +148,7 @@ parameters:
   name: DOCKER_REGISTRY
   value: "registry.devshift.net"
 
-- description: Docker image to use
+- description: docker image to use
   displayName: Docker image
   required: true
   name: DOCKER_IMAGE
@@ -164,7 +164,7 @@ parameters:
   displayName: Number of deployment replicas
   required: true
   name: REPLICAS
-  value: "2"
+  value: "1"
 
 - description: Port Number
   displayName: Port Number
