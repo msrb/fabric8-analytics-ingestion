@@ -1,7 +1,7 @@
 FROM registry.centos.org/centos/centos:7
 
 RUN yum install -y epel-release &&\
-    yum install -y gcc git python34-pip python34-requests python34-devel postgresql-server &&\
+    yum install -y gcc git python34-pip python34-requests python34-devel postgresql &&\
     yum clean all
 
 COPY ./requirements.txt /
