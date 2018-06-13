@@ -4,7 +4,7 @@ ENV LANG=en_US.UTF-8 \
     # place for alembic migrations
     ALEMBIC_DIR='/alembic'
 RUN yum install -y epel-release &&\
-    yum install -y gcc python34-pip python34-requests python34-devel &&\
+    yum install -y gcc python34-pip python34-requests python34-devel postgresql-server &&\
     yum clean all
 
 RUN pip3 install --upgrade pip>=10.0.0
