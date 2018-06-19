@@ -12,10 +12,10 @@ RUN pip3 install --upgrade pip>=10.0.0 &&\
 COPY ./f8a_ingestion /f8a_ingestion
 COPY ./alembic /alembic
 COPY ./alembic.ini /alembic.ini
-COPY ./hack/run-db-migrations.sh /alembic/run-db-migrations.sh
+COPY ./scripts/run-db-migrations.sh /alembic/run-db-migrations.sh
 RUN chmod +x /alembic/run-db-migrations.sh
 
-COPY ./hack/ingestion-pre-hook.sh /
+COPY ./scripts/ingestion-pre-hook.sh /
 RUN chmod +x /ingestion-pre-hook.sh
 
 ADD scripts/entrypoint.sh /bin/entrypoint.sh
