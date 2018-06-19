@@ -23,11 +23,9 @@ docker_login() {
 
 prep() {
     yum -y update
-    yum -y install git which epel-release
-    yum -y install python34-pip
-    yum -y install docker
+    yum -y install epel-release
+    yum -y install git which python34-pip python34-virtualenv docker
     systemctl start docker
-    pip3 install virtualenv
 }
 
 build_image() {
