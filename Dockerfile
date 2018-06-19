@@ -10,7 +10,6 @@ RUN pip3 install --upgrade pip>=10.0.0 &&\
     pip3 install -r requirements.txt && rm requirements.txt
 
 COPY ./f8a_ingestion /f8a_ingestion
-COPY ./swagger /swagger
 COPY ./alembic /alembic
 COPY ./alembic.ini /alembic.ini
 COPY ./hack/run-db-migrations.sh /alembic/run-db-migrations.sh
