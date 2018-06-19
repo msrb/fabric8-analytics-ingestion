@@ -1,11 +1,6 @@
 #!/bin/bash
 
-# fail if smth fails
-# the whole env will be running if test suite fails so you can debug
 set -e
-
-# for debugging this script, b/c I sometimes get
-# unable to prepare context: The Dockerfile (Dockerfile.tests) must be within the build context (.)
 set -x
 
 here=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
