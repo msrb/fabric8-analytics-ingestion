@@ -1,0 +1,15 @@
+include Dockerfile
+recursive-include scripts *
+include LICENSE
+include README.md
+include requirements.txt
+recursive-include f8a_ingestion/swagger/ *.yaml
+
+include runtests.sh
+include alembic.ini
+graft tests
+graft openshift
+graft alembic
+
+global-exclude __pycache__
+global-exclude *.py[co]
