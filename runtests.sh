@@ -50,6 +50,7 @@ function prepare_venv() {
 }
 
 prepare_venv
+pip3 install -r requirements.txt
 pip3 install -r tests/requirements.txt
 
 echo "Creating network ${DOCKER_NETWORK}"
