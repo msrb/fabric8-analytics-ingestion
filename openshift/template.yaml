@@ -1,34 +1,34 @@
 apiVersion: v1
 kind: Template
 labels:
-  template: f8a-analytics-ingestion
+  template: f8a-ingestion-api
 metadata:
-  name: f8a-analytics-ingestion
+  name: f8a-ingestion-api
   annotations:
-    description: f8a-analytics-ingestion
+    description: f8a-ingestion-api
 objects:
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
     labels:
-      service: f8a-analytics-ingestion
-    name: f8a-analytics-ingestion
+      service: f8a-ingestion-api
+    name: f8a-ingestion-api
   spec:
     replicas: "${{REPLICAS}}"
     selector:
-      service: f8a-analytics-ingestion
+      service: f8a-ingestion-api
     strategy:
       type: Rolling
       rollingParams:
         pre:
           failurePolicy: Retry
           execNewPod:
-            containerName: f8a-analytics-ingestion
+            containerName: f8a-ingestion-api
             command: ["/ingestion-pre-hook.sh"]
     template:
       metadata:
         labels:
-          service: f8a-analytics-ingestion
+          service: f8a-ingestion-api
       spec:
         containers:
         - command:
@@ -62,7 +62,7 @@ objects:
           - name: CLASS_TYPE
             value: "sync"
           image: "${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${IMAGE_TAG}"
-          name: f8a-analytics-ingestion
+          name: f8a-ingestion-api
           ports:
           - containerPort: ${{INGESTION_API_SERVICE_PORT}}
           livenessProbe:
@@ -92,8 +92,8 @@ objects:
   kind: Service
   metadata:
     labels:
-      service: f8a-analytics-ingestion
-    name: f8a-analytics-ingestion
+      service: f8a-ingestion-api
+    name: f8a-ingestion-api
   spec:
     ports:
     - port: ${{INGESTION_API_SERVICE_PORT}}
@@ -101,16 +101,16 @@ objects:
       targetPort: ${{INGESTION_API_SERVICE_PORT}}
       protocol: TCP
     selector:
-      service: f8a-analytics-ingestion
+      service: f8a-ingestion-api
 - apiVersion: v1
   kind: Route
   metadata:
-    name: f8a-analytics-ingestion
+    name: f8a-ingestion-api
   spec:
     host: ${INGESTION_API_HOSTNAME}
     to:
       kind: Service
-      name: f8a-analytics-ingestion
+      name: f8a-ingestion-api
 
 parameters:
 - description: A hostname where the fabric8-analytics Ingestion API should be exposed (will be auto-generated if empty)
@@ -142,13 +142,13 @@ parameters:
   name: MEMORY_LIMIT
   value: "512Mi"
 
-- description: Docker registry where the image is
+- description: Docker registry
   displayName: Docker registry
   required: true
   name: DOCKER_REGISTRY
   value: "registry.devshift.net"
 
-- description: docker image to use
+- description: Docker image
   displayName: Docker image
   required: true
   name: DOCKER_IMAGE
