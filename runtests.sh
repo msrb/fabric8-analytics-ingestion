@@ -14,7 +14,7 @@ TIMESTAMP="$(date +%F-%H-%M-%S)"
 
 POSTGRES_IMAGE_NAME="registry.centos.org/centos/postgresql-94-centos7:latest"
 
-TESTDB_CONTAINER_NAME="inegstion-tests-db-${TIMESTAMP}"
+TESTDB_CONTAINER_NAME="ingestion-tests-db-${TIMESTAMP}"
 DOCKER_NETWORK="F8aIngestionTest"
 
 gc() {
