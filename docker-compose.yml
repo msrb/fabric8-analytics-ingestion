@@ -22,6 +22,12 @@ services:
     links:
       - postgres
     container_name: alembic_migrations
+    environment:
+      POSTGRESQL_USER: coreapi
+      POSTGRESQL_PASSWORD: coreapi
+      POSTGRESQL_DATABASE: coreapi
+      PGBOUNCER_SERVICE_HOST: coreapi-postgres
+      PGBOUNCER_SERVICE_PORT: 5432
 
   f8a_ingestion:
     build: .
