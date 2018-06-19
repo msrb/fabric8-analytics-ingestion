@@ -35,7 +35,7 @@ objects:
           - /bin/entrypoint.sh
           env:
           - name: PGBOUNCER_SERVICE_HOST
-            value: coreapi-postgres
+            value: bayesian-pgbouncer
           - name: PGBOUNCER_SERVICE_PORT
             value: "5432"
           - name: POSTGRESQL_DATABASE
