@@ -15,9 +15,6 @@ COPY ./alembic.ini /alembic.ini
 COPY ./scripts/run-db-migrations.sh /alembic/run-db-migrations.sh
 RUN chmod +x /alembic/run-db-migrations.sh
 
-COPY ./scripts/ingestion-pre-hook.sh /
-RUN chmod +x /ingestion-pre-hook.sh
-
 ADD scripts/entrypoint.sh /bin/entrypoint.sh
 
 RUN chmod 777 /bin/entrypoint.sh

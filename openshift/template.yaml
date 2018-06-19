@@ -24,7 +24,7 @@ objects:
           failurePolicy: Retry
           execNewPod:
             containerName: f8a-ingestion-api
-            command: ["/ingestion-pre-hook.sh"]
+            command: ["/alembic/run-db-migrations.sh"]
     template:
       metadata:
         labels:

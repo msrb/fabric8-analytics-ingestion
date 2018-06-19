@@ -44,7 +44,6 @@ setup(
     name='fabric8-analytics-ingestion',
     version='0.1',
     scripts=[
-        'hack/ingestion-pre-hook.sh'
     ],
     packages=find_packages(exclude=['tests', 'tests.*']),
     install_requires=reqs,
