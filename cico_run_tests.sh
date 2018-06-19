@@ -4,6 +4,10 @@ set -ex
 
 . cico_setup.sh
 
-./runtests.sh
+docker_login
 
+make test
 
+build_image
+
+push_image
