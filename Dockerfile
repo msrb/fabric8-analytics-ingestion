@@ -11,7 +11,6 @@ RUN pip3 install --upgrade pip>=10.0.0 &&\
 
 COPY ./f8a_ingestion /f8a_ingestion
 COPY ./swagger /swagger
-COPY ./rest_api.py /
 COPY ./alembic /alembic
 COPY ./alembic.ini /alembic.ini
 COPY ./hack/run-db-migrations.sh /alembic/run-db-migrations.sh
