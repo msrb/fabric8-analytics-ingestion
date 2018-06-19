@@ -15,7 +15,8 @@ services:
   alembic_migrations:
     build:
       context: .
-      dockerfile: Dockerfile.migrations
+      dockerfile: Dockerfile
+    entrypoint: "/alembic/run-db-migrations.sh"
     network_mode: bridge
     restart: on-failure
     hostname: alembic_migrations
