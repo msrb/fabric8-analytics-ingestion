@@ -11,7 +11,7 @@ paths:
   /liveness:
     get:
       tags: [Service settings]
-      operationId: rest_api.liveness
+      operationId: f8a_ingestion.rest_api.liveness
       summary: Get job service liveness
       responses:
         200:
@@ -19,7 +19,7 @@ paths:
   /readiness:
     get:
       tags: [Service settings]
-      operationId: rest_api.readiness
+      operationId: f8a_ingestion.rest_api.readiness
       summary: Get job service readiness
       responses:
         200:
@@ -27,7 +27,7 @@ paths:
   /ingest:
     post:
       tags: [Ingestion]
-      operationId: rest_api.ingest
+      operationId: f8a_ingestion.rest_api.ingest
       summary: Ingests data
       consumes:
         - application/json

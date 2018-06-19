@@ -14,4 +14,4 @@ set -x
 gunicorn --pythonpath /f8a_ingestion/ \
          --bind 0.0.0.0:${APP_PORT:-5000} \
          ${GUNICORN_ARGS} \
-         rest_api:app
+         f8a_ingestion.rest_api:app
